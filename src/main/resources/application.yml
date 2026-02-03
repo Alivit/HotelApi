@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: HotelService
+  datasource:
+    url: jdbc:h2:file:/data/demo
+    username: user
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    enabled: false
+
+
