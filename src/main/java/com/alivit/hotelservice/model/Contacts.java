@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "contacts")
-public class Contact {
+public class Contacts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,6 @@ public class Contact {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(mappedBy = "contact")
+    @OneToOne(mappedBy = "contacts")
     Hotel hotel;
 }

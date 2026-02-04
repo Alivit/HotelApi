@@ -2,13 +2,23 @@ package com.alivit.hotelservice.service.impl;
 
 import com.alivit.hotelservice.dto.HotelCreateRequest;
 import com.alivit.hotelservice.dto.HotelCreateResponse;
+import com.alivit.hotelservice.dto.HotelFindResponse;
+import com.alivit.hotelservice.handler.exception.ResourceNotCreatedException;
+import com.alivit.hotelservice.handler.exception.ResourceNotFoundException;
 import com.alivit.hotelservice.mapper.HotelMapper;
 import com.alivit.hotelservice.model.Hotel;
 import com.alivit.hotelservice.repository.HotelRepository;
 import com.alivit.hotelservice.service.HotelService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import static com.alivit.hotelservice.handler.exception.ExceptionAnswer.HOTEL_NOT_CREATED;
+import static com.alivit.hotelservice.handler.exception.ExceptionAnswer.HOTEL_NOT_FOUND;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
@@ -17,9 +27,34 @@ public class HotelServiceImpl implements HotelService {
     private final HotelMapper hotelMapper;
 
     @Override
+    @Transactional
     public HotelCreateResponse save(HotelCreateRequest hotelCreateRequest) {
-        Hotel hotel = hotelMapper.hotelCreateRequestToHotel(hotelCreateRequest);
-        hotel = hotelRepository.save(hotel);
-        return hotelMapper.hotelToHotelCreateResponse(hotel);
+        Hotel hotelBeforeSaving = hotelMapper.hotelCreateRequestToHotel(hotelCreateRequest);
+        Hotel savedHotel;
+        try {
+            log.error(String.format(HOTEL_NOT_FOUND, hotelBeforeSaving.toString()));
+            savedHotel = hotelRepository.save(hotelBeforeSaving);
+        } catch (DataIntegrityViolationException ex){
+            throw new ResourceNotCreatedException(String.format(HOTEL_NOT_CREATED, ex.getMessage()));
+        }
+
+        log.debug("Hotel has been created: {}", savedHotel);
+        HotelCreateResponse hotelCreateResponse = hotelMapper.hotelToHotelCreateResponse(savedHotel);
+        log.debug("HotelResponse dto: {}", hotelCreateResponse);
+        return hotelCreateResponse;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public HotelFindResponse findById(Long id) {
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error(String.format(HOTEL_NOT_FOUND, id));
+                    return new ResourceNotFoundException(String.format(HOTEL_NOT_FOUND, id));
+                });
+        log.debug("Hotel has been find by id: {} \n Hotel: {}", id, hotel);
+        HotelFindResponse hotelFindResponse = hotelMapper.hotelToHotelFindResponse(hotel);
+        log.debug("HotelResponse dto: {}", hotelFindResponse);
+        return hotelFindResponse;
     }
 }

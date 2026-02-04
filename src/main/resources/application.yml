@@ -1,17 +1,23 @@
+server:
+  port: 8092
+logging:
+  level:
+    root: debug
 spring:
   application:
     name: HotelService
   datasource:
-    url: jdbc:h2:file:/data/demo
-    username: user
+    url: jdbc:h2:file:C:/data/sample
+    username: sa
     password: password
     driverClassName: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
   h2:
     console:
       enabled: true
   liquibase:
     enabled: false
-
 

@@ -1,18 +1,15 @@
 package com.alivit.hotelservice.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
-public record HotelCreateRequest(
-
-        @NotBlank
+public record HotelFindResponse(
+        Long id,
         String name,
         String description,
-
-        @NotBlank
         String brand,
-
         AddressDto address,
         ContactsDto contacts,
-        ArrivalTimeDto arrivalTime
+        ArrivalTimeDto arrivalTime,
+        List<String> amenities
 ) {
 }

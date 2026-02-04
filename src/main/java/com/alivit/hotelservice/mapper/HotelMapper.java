@@ -2,6 +2,7 @@ package com.alivit.hotelservice.mapper;
 
 import com.alivit.hotelservice.dto.HotelCreateRequest;
 import com.alivit.hotelservice.dto.HotelCreateResponse;
+import com.alivit.hotelservice.dto.HotelFindResponse;
 import com.alivit.hotelservice.model.Address;
 import com.alivit.hotelservice.model.Hotel;
 import org.mapstruct.Builder;
@@ -18,7 +19,9 @@ public interface HotelMapper {
 
     Hotel hotelCreateRequestToHotel(HotelCreateRequest hotelCreateRequest);
 
-    @Mapping(source = "contact.phone", target = "phone")
+    HotelFindResponse hotelToHotelFindResponse(Hotel hotel);
+
+    @Mapping(source = "contacts.phone", target = "phone")
     @Mapping(source = "address", target = "address", qualifiedByName = "addressToString")
     HotelCreateResponse hotelToHotelCreateResponse(Hotel hotel);
 
