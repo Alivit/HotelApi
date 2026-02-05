@@ -3,6 +3,7 @@ package com.alivit.hotelservice.service.impl;
 import com.alivit.hotelservice.dto.HotelCreateRequest;
 import com.alivit.hotelservice.dto.HotelCreateResponse;
 import com.alivit.hotelservice.dto.HotelFindResponse;
+import com.alivit.hotelservice.dto.ParamsDto;
 import com.alivit.hotelservice.handler.exception.ResourceNotCreatedException;
 import com.alivit.hotelservice.handler.exception.ResourceNotFoundException;
 import com.alivit.hotelservice.mapper.HotelMapper;
@@ -12,6 +13,8 @@ import com.alivit.hotelservice.service.HotelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +59,17 @@ public class HotelServiceImpl implements HotelService {
         HotelFindResponse hotelFindResponse = hotelMapper.hotelToHotelFindResponse(hotel);
         log.debug("HotelResponse dto: {}", hotelFindResponse);
         return hotelFindResponse;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<HotelCreateResponse> findAll(Pageable pageable) {
+        return hotelRepository.findAll(pageable).map(hotelMapper::hotelToHotelCreateResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<HotelCreateResponse> findByParams(Pageable pageable, ParamsDto paramsDto) {
+        return hotelRepository.findByParams(paramsDto, pageable).map(hotelMapper::hotelToHotelCreateResponse);
     }
 }

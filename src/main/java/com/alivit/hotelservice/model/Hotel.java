@@ -55,7 +55,7 @@ public class Hotel {
     private ArrivalTime arrivalTime;
 
     @ElementCollection
-    @CollectionTable(name = "amenities", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "amenities")
+    @CollectionTable(name = "amenities", joinColumns = @JoinColumn(name = "hotel_id"))
+    @Column(name = "amenity")
     private Set<String> amenities;
 }
