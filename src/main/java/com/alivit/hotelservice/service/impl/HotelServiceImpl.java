@@ -35,7 +35,6 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotelBeforeSaving = hotelMapper.hotelCreateRequestToHotel(hotelCreateRequest);
         Hotel savedHotel;
         try {
-            log.error(String.format(HOTEL_NOT_FOUND, hotelBeforeSaving.toString()));
             savedHotel = hotelRepository.save(hotelBeforeSaving);
         } catch (DataIntegrityViolationException ex){
             throw new ResourceNotCreatedException(String.format(HOTEL_NOT_CREATED, ex.getMessage()));

@@ -1,0 +1,33 @@
+package com.alivit.hotelservice.service.impl;
+
+import com.alivit.hotelservice.handler.exception.ResourceNotFoundException;
+import com.alivit.hotelservice.repository.AmenityRepository;
+import com.alivit.hotelservice.repository.HotelRepository;
+import com.alivit.hotelservice.service.AmenityService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
+import static com.alivit.hotelservice.handler.exception.ExceptionAnswer.HOTEL_NOT_FOUND;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class AmenityServiceImpl implements AmenityService {
+
+    private final AmenityRepository amenityRepository;
+
+    @Override
+    public void save(Set<String> amenities, Long id) {
+        if(amenityRepository.countHotelByIdIs(id) == 0){
+            log.error(String.format(HOTEL_NOT_FOUND, id));
+            throw new ResourceNotFoundException(String.format(HOTEL_NOT_FOUND, id));
+        }
+        Set<String> oldAmenities = amenityRepository.getAmenitiesNative(id);
+        if(oldAmenities != null) amenities.removeAll(oldAmenities);
+        amenities.forEach(amenity -> amenityRepository.insertAmenity(id, amenity));
+        log.debug("The following amenities - {} have been added to the hotel", amenities);
+    }
+}

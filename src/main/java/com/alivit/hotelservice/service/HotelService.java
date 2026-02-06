@@ -7,6 +7,8 @@ import com.alivit.hotelservice.dto.ParamsDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Set;
+
 public interface HotelService {
 
     HotelCreateResponse save(HotelCreateRequest hotelCreateRequest);
