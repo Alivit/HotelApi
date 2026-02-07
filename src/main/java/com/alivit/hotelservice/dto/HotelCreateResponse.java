@@ -1,5 +1,8 @@
 package com.alivit.hotelservice.dto;
 
+import lombok.Builder;
+
+@Builder
 public record HotelCreateResponse(
         Long id,
         String name,

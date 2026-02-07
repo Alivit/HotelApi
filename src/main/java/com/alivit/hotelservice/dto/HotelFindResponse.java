@@ -1,7 +1,10 @@
 package com.alivit.hotelservice.dto;
 
-import java.util.List;
+import lombok.Builder;
 
+import java.util.Set;
+
+@Builder
 public record HotelFindResponse(
         Long id,
         String name,
@@ -10,6 +13,6 @@ public record HotelFindResponse(
         AddressDto address,
         ContactsDto contacts,
         ArrivalTimeDto arrivalTime,
-        List<String> amenities
+        Set<String> amenities
 ) {
 }
