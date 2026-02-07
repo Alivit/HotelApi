@@ -2,7 +2,6 @@ package com.alivit.hotelservice.service.impl;
 
 import com.alivit.hotelservice.handler.exception.ResourceNotFoundException;
 import com.alivit.hotelservice.repository.AmenityRepository;
-import com.alivit.hotelservice.repository.HotelRepository;
 import com.alivit.hotelservice.service.AmenityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,7 @@ public class AmenityServiceImpl implements AmenityService {
 
     @Override
     public void save(Set<String> amenities, Long id) {
-        if(amenityRepository.countHotelByIdIs(id) == 0){
+        if(!amenityRepository.existsHotelById((id))){
             log.error(String.format(HOTEL_NOT_FOUND, id));
             throw new ResourceNotFoundException(String.format(HOTEL_NOT_FOUND, id));
         }

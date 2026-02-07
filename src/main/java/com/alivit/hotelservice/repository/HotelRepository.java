@@ -3,6 +3,7 @@ package com.alivit.hotelservice.repository;
 import com.alivit.hotelservice.dto.ParamsDto;
 import com.alivit.hotelservice.model.Address;
 import com.alivit.hotelservice.model.Hotel;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.domain.Page;
@@ -10,10 +11,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecificationExecutor<Hotel> {
+
+    @Query(value = "SELECT BRAND, COUNT(*) FROM HOTELS GROUP BY BRAND", nativeQuery = true)
+    List<Object[]> groupByBrand();
+
+    @Query(value = "SELECT A.CITY, COUNT(*) FROM HOTELS " +
+                   "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID " +
+                   "GROUP BY A.CITY", nativeQuery = true)
+    List<Object[]> groupByCity();
+
+    @Query(value = "SELECT A.AMENITY, COUNT(*) FROM HOTELS " +
+            "LEFT JOIN PUBLIC.AMENITIES AS A on A.HOTEL_ID = HOTELS.ID " +
+            "GROUP BY A.AMENITY", nativeQuery = true)
+    List<Object[]> groupByAmenity();
+
+    @Query(value = "SELECT A.COUNTRY, COUNT(*) FROM HOTELS " +
+            "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID " +
+            "GROUP BY A.COUNTRY", nativeQuery = true)
+    List<Object[]> groupByCountry();
 
     default Page<Hotel> findByParams(ParamsDto params, Pageable pageable) {
         if (params == null) {

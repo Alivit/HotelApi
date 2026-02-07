@@ -15,13 +15,11 @@ public interface AmenityRepository extends JpaRepository<Hotel, Long> {
     @Query(value = "SELECT amenity FROM amenities WHERE hotel_id = ?1", nativeQuery = true)
     Set<String> getAmenitiesNative(Long hotelId);
 
-    @Transactional(readOnly = true)
-    int countHotelByIdIs(Long hotelId);
-
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO amenities (hotel_id, amenity) VALUES (:hotelId, :amenity)",
             nativeQuery = true)
-    int insertAmenity(Long hotelId,String amenity);
+    void insertAmenity(Long hotelId,String amenity);
 
+    boolean existsHotelById(Long id);
 }

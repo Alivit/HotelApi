@@ -7,7 +7,7 @@ import com.alivit.hotelservice.dto.ParamsDto;
 import com.alivit.hotelservice.service.AmenityService;
 import com.alivit.hotelservice.service.HotelService;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -42,7 +43,7 @@ public class HotelController {
 
     @PostMapping("/hotels/{id}/amenities")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveAmenities(@PathVariable(value = "id") Long id, @RequestBody Set<String> amenities){
+    public void saveAmenities(@PathVariable @Positive Long id, @RequestBody Set<String> amenities){
         log.debug("Saving in hotel by id {} amenities {}", id, amenities);
         amenityService.save(amenities, id);
     }
@@ -66,8 +67,14 @@ public class HotelController {
     }
 
     @GetMapping("/hotels/{id}")
-    public HotelFindResponse findById(@PathVariable(value = "id") Long id){
+    public HotelFindResponse findById(@PathVariable @Positive Long id){
         log.debug("Getting hotel by id {}", id);
         return hotelService.findById(id);
+    }
+
+    @GetMapping("/histogram/{param}")
+    public Map<String, Long> getHistogram(@PathVariable String param){
+        log.debug("Getting histogram by parameter {}", param);
+        return hotelService.getHistogram(param);
     }
 }

@@ -10,6 +10,7 @@ public record ContactsDto(
         String phone,
 
         @Email
+        @NotBlank
         String email
 ) {
 }

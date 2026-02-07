@@ -18,6 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static com.alivit.hotelservice.handler.exception.ExceptionAnswer.HOTEL_NOT_CREATED;
 import static com.alivit.hotelservice.handler.exception.ExceptionAnswer.HOTEL_NOT_FOUND;
 
@@ -36,7 +40,7 @@ public class HotelServiceImpl implements HotelService {
         Hotel savedHotel;
         try {
             savedHotel = hotelRepository.save(hotelBeforeSaving);
-        } catch (DataIntegrityViolationException ex){
+        } catch (DataIntegrityViolationException ex) {
             throw new ResourceNotCreatedException(String.format(HOTEL_NOT_CREATED, ex.getMessage()));
         }
 
@@ -70,5 +74,23 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(readOnly = true)
     public Page<HotelCreateResponse> findByParams(Pageable pageable, ParamsDto paramsDto) {
         return hotelRepository.findByParams(paramsDto, pageable).map(hotelMapper::hotelToHotelCreateResponse);
+    }
+
+    @Override
+    public Map<String, Long> getHistogram(String param) {
+        return switch (param) {
+            case "country" -> listToMap(hotelRepository.groupByCountry());
+            case "city" -> listToMap(hotelRepository.groupByCity());
+            case "amenities" -> listToMap(hotelRepository.groupByAmenity());
+            case "brand" -> listToMap(hotelRepository.groupByBrand());
+            default -> Map.of();
+        };
+    }
+
+    private Map<String, Long> listToMap(List<Object[]> list) {
+        return list.stream().collect(Collectors.toMap(
+                obj -> (String) obj[0],
+                obj -> (Long) obj[1]
+        ));
     }
 }
