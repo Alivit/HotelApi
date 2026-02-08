@@ -19,7 +19,7 @@ public interface AmenityRepository extends JpaRepository<Hotel, Long> {
     @Modifying
     @Query(value = "INSERT INTO amenities (hotel_id, amenity) VALUES (:hotelId, :amenity)",
             nativeQuery = true)
-    void insertAmenity(Long hotelId,String amenity);
+    void insertAmenity(Long hotelId, String amenity);
 
     boolean existsHotelById(Long id);
 }

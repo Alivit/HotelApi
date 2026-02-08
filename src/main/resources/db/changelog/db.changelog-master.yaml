@@ -1,0 +1,4 @@
+databaseChangeLog:
+  #create table
+  - include:
+      file: db/changelog/changeset/ddl/create-table.yaml

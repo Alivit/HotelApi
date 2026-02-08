@@ -3,7 +3,6 @@ package com.alivit.hotelservice.repository;
 import com.alivit.hotelservice.dto.ParamsDto;
 import com.alivit.hotelservice.model.Address;
 import com.alivit.hotelservice.model.Hotel;
-import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecificationExecutor<Hotel> {
@@ -23,19 +21,19 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecific
     @Query(value = "SELECT BRAND, COUNT(*) FROM HOTELS GROUP BY BRAND", nativeQuery = true)
     List<Object[]> groupByBrand();
 
-    @Query(value = "SELECT A.CITY, COUNT(*) FROM HOTELS " +
-                   "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID " +
-                   "GROUP BY A.CITY", nativeQuery = true)
+    @Query(value = "SELECT A.CITY, COUNT(*) FROM HOTELS "
+            + "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
+            + "GROUP BY A.CITY", nativeQuery = true)
     List<Object[]> groupByCity();
 
-    @Query(value = "SELECT A.AMENITY, COUNT(*) FROM HOTELS " +
-            "LEFT JOIN PUBLIC.AMENITIES AS A on A.HOTEL_ID = HOTELS.ID " +
-            "GROUP BY A.AMENITY", nativeQuery = true)
+    @Query(value = "SELECT A.AMENITY, COUNT(*) FROM HOTELS "
+            + "LEFT JOIN PUBLIC.AMENITIES AS A on A.HOTEL_ID = HOTELS.ID "
+            + "GROUP BY A.AMENITY", nativeQuery = true)
     List<Object[]> groupByAmenity();
 
-    @Query(value = "SELECT A.COUNTRY, COUNT(*) FROM HOTELS " +
-            "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID " +
-            "GROUP BY A.COUNTRY", nativeQuery = true)
+    @Query(value = "SELECT A.COUNTRY, COUNT(*) FROM HOTELS "
+            + "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
+            + "GROUP BY A.COUNTRY", nativeQuery = true)
     List<Object[]> groupByCountry();
 
     default Page<Hotel> findByParams(ParamsDto params, Pageable pageable) {
@@ -59,7 +57,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecific
 
     default Specification<Hotel> brandLike(String brand) {
         return (hotel, cq, cb) -> isNotEmpty(brand)
-                ? cb.like(cb.lower(hotel.get("brand")),"%" + brand.toLowerCase() + "%")
+                ? cb.like(cb.lower(hotel.get("brand")), "%" + brand.toLowerCase() + "%")
                 : cb.conjunction();
     }
 
@@ -73,12 +71,12 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecific
         return (hotel, cq, cb) -> {
             Join<Hotel, Address> address = hotel.join("address", JoinType.LEFT);
             return isNotEmpty(city)
-                    ? cb.like(cb.lower(address.get("city")),"%" + city.toLowerCase() + "%")
+                    ? cb.like(cb.lower(address.get("city")), "%" + city.toLowerCase() + "%")
                     : cb.conjunction();
         };
     }
 
-    default Specification<Hotel> amenityLike(String amenity){
+    default Specification<Hotel> amenityLike(String amenity) {
         return (hotel, cq, cb) -> {
             Join<Hotel, String> amenities = hotel.join("amenities", JoinType.LEFT);
             return isNotEmpty(amenity)

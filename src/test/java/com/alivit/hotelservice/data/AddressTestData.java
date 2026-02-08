@@ -12,9 +12,11 @@ public final class AddressTestData {
     private static final String COUNTRY = "Belarus";
     private static final String POST_CODE = "220004";
 
-    private AddressTestData() {}
+    private AddressTestData() {
 
-    public static AddressDto getAddressDto(){
+    }
+
+    public static AddressDto getAddressDto() {
         return AddressDto.builder()
                 .houseNumber(HOUSE_NUMBER)
                 .street(STREET)
@@ -24,7 +26,7 @@ public final class AddressTestData {
                 .build();
     }
 
-    public static Address getAddress(){
+    public static Address getAddress() {
         return Address.builder()
                 .id(ID)
                 .houseNumber(HOUSE_NUMBER)

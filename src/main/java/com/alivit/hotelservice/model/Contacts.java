@@ -34,5 +34,5 @@ public class Contacts {
     private String email;
 
     @OneToOne(mappedBy = "contacts")
-    Hotel hotel;
+    private Hotel hotel;
 }

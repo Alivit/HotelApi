@@ -36,14 +36,14 @@ public class HotelController {
 
     @PostMapping("/hotels")
     @ResponseStatus(HttpStatus.CREATED)
-    public HotelCreateResponse save(@RequestBody HotelCreateRequest hotelCreateRequest){
+    public HotelCreateResponse save(@RequestBody HotelCreateRequest hotelCreateRequest) {
         log.debug("Saving hotel {}", hotelCreateRequest);
         return hotelService.save(hotelCreateRequest);
     }
 
     @PostMapping("/hotels/{id}/amenities")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveAmenities(@PathVariable @Positive Long id, @RequestBody Set<String> amenities){
+    public void saveAmenities(@PathVariable @Positive Long id, @RequestBody Set<String> amenities) {
         log.debug("Saving in hotel by id {} amenities {}", id, amenities);
         amenityService.save(amenities, id);
     }
@@ -51,7 +51,7 @@ public class HotelController {
     @GetMapping("/hotels")
     public Page<HotelCreateResponse> findAll(
             @RequestParam(name = "size", defaultValue = "10") @Min(value = 1) int size,
-            @RequestParam(name = "page", defaultValue = "0") @Min(value = 0) int page){
+            @RequestParam(name = "page", defaultValue = "0") @Min(value = 0) int page) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         return hotelService.findAll(pageable);
     }
@@ -60,20 +60,20 @@ public class HotelController {
     public Page<HotelCreateResponse> findByParams(
             @RequestParam(name = "size", defaultValue = "10") @Min(value = 1) int size,
             @RequestParam(name = "page", defaultValue = "0") @Min(value = 0) int page,
-            ParamsDto paramsDto){
+            ParamsDto paramsDto) {
         log.debug("Getting hotels by params: {}", paramsDto);
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         return hotelService.findByParams(pageable, paramsDto);
     }
 
     @GetMapping("/hotels/{id}")
-    public HotelFindResponse findById(@PathVariable @Positive Long id){
+    public HotelFindResponse findById(@PathVariable @Positive Long id) {
         log.debug("Getting hotel by id {}", id);
         return hotelService.findById(id);
     }
 
     @GetMapping("/histogram/{param}")
-    public Map<String, Long> getHistogram(@PathVariable String param){
+    public Map<String, Long> getHistogram(@PathVariable String param) {
         log.debug("Getting histogram by parameter {}", param);
         return hotelService.getHistogram(param);
     }

@@ -20,12 +20,14 @@ public class AmenityServiceImpl implements AmenityService {
 
     @Override
     public void save(Set<String> amenities, Long id) {
-        if(!amenityRepository.existsHotelById((id))){
+        if (!amenityRepository.existsHotelById((id))) {
             log.error(String.format(HOTEL_NOT_FOUND, id));
             throw new ResourceNotFoundException(String.format(HOTEL_NOT_FOUND, id));
         }
         Set<String> oldAmenities = amenityRepository.getAmenitiesNative(id);
-        if(oldAmenities != null) amenities.removeAll(oldAmenities);
+        if (oldAmenities != null) {
+            amenities.removeAll(oldAmenities);
+        }
         amenities.forEach(amenity -> amenityRepository.insertAmenity(id, amenity));
         log.debug("The following amenities - {} have been added to the hotel", amenities);
     }

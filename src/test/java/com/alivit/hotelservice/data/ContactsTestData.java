@@ -5,11 +5,13 @@ import com.alivit.hotelservice.model.Contacts;
 
 public final class ContactsTestData {
 
-    private final static Long ID = 1L;
-    private final static String PHONE = "+375 17 309-80-00";
-    private final static String EMAIL = "doubletreeminsk.info@hilton.com";
+    private static final Long ID = 1L;
+    private static final String PHONE = "+375 17 309-80-00";
+    private static final String EMAIL = "doubletreeminsk.info@hilton.com";
 
-    private ContactsTestData() {}
+    private ContactsTestData() {
+
+    }
 
     public static ContactsDto getContactsDto() {
         return ContactsDto.builder()

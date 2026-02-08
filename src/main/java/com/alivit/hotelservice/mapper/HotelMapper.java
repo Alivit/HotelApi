@@ -26,7 +26,7 @@ public interface HotelMapper {
     HotelCreateResponse hotelToHotelCreateResponse(Hotel hotel);
 
     @Named("addressToString")
-    public static String addressToString(Address address){
+    static String addressToString(Address address) {
         return address.getHouseNumber() + " " + address.getStreet()
                 + ", " + address.getCity() + ", " + address.getPostCode()
                 + ", " + address.getCountry();

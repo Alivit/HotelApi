@@ -41,6 +41,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class HotelServiceImplTest {
 
+    private static HotelCreateRequest request;
+    private static Hotel hotel;
+
     @Mock
     private HotelRepository hotelRepository;
 
@@ -50,9 +53,6 @@ class HotelServiceImplTest {
     @InjectMocks
     private HotelServiceImpl hotelService;
 
-    private static HotelCreateRequest request;
-    private static Hotel hotel;
-
     @BeforeAll
     static void init() {
         request = HotelTestData.getHotelCreateRequest();
@@ -60,10 +60,10 @@ class HotelServiceImplTest {
     }
 
     @Nested
-    class CreateHotel{
+    class CreateHotel {
 
         @Test
-        public void createShouldReturnSuccessfulBody(){
+        public void createShouldReturnSuccessfulBody() {
             HotelCreateResponse expectedResponse = HotelTestData.getHotelCreateResponse();
 
             when(hotelMapper.hotelCreateRequestToHotel(any())).thenReturn(hotel);
@@ -80,7 +80,7 @@ class HotelServiceImplTest {
         }
 
         @Test
-        public void createShouldReturnException(){
+        public void createShouldReturnException() {
             when(hotelMapper.hotelCreateRequestToHotel(any())).thenReturn(hotel);
             when(hotelRepository.save(any()))
                     .thenThrow(new DataIntegrityViolationException(""));

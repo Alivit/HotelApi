@@ -6,15 +6,14 @@ import com.alivit.hotelservice.dto.HotelCreateResponse;
 import com.alivit.hotelservice.dto.HotelFindResponse;
 import com.alivit.hotelservice.model.Hotel;
 
-import java.util.List;
 import java.util.Set;
 
 public final class HotelTestData {
 
     private static final Long ID = 1L;
     private static final String NAME = "DoubleTree by Hilton Minsk";
-    private static final String DESCRIPTION = "The DoubleTree by Hilton Hotel Minsk offers 193 luxurious rooms in" +
-            " the Belorussian capital and stunning views of Minsk city from the hotel's 20th floor ...";
+    private static final String DESCRIPTION = "The DoubleTree by Hilton Hotel Minsk offers 193 luxurious rooms in"
+            + " the Belorussian capital and stunning views of Minsk city from the hotel's 20th floor ...";
     private static final String BRAND = "Hilton";
     private static final Set<String> AMENITIES = Set.of("Free parking", "Free WiFi",
             "Non-smoking rooms", "Concierge",
@@ -22,9 +21,11 @@ public final class HotelTestData {
             "Pet-friendly rooms", "Room service",
             "Business center", "Meeting rooms");
 
-    private HotelTestData() {}
+    private HotelTestData() {
 
-    public static Hotel getHotel(){
+    }
+
+    public static Hotel getHotel() {
         return Hotel.builder()
                 .id(ID)
                 .name(NAME)
@@ -71,7 +72,7 @@ public final class HotelTestData {
                 .build();
     }
 
-    private static String addressToString(AddressDto address){
+    private static String addressToString(AddressDto address) {
         return address.houseNumber() + " " + address.street()
                 + ", " + address.city() + ", " + address.postCode()
                 + ", " + address.country();

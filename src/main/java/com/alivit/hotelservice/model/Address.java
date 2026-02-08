@@ -43,5 +43,5 @@ public class Address {
     private String postCode;
 
     @OneToOne(mappedBy = "address")
-    Hotel hotel;
+    private Hotel hotel;
 }
