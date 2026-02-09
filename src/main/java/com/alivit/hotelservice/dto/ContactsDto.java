@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record ContactsDto(
+
         @Phone
         @NotBlank
         String phone,

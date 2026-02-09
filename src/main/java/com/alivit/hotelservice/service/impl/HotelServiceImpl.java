@@ -46,7 +46,7 @@ public class HotelServiceImpl implements HotelService {
 
         log.debug("Hotel has been created: {}", savedHotel);
         HotelCreateResponse hotelCreateResponse = hotelMapper.hotelToHotelCreateResponse(savedHotel);
-        log.debug("HotelResponse dto: {}", hotelCreateResponse);
+        log.debug("HotelCreateResponse dto: {}", hotelCreateResponse);
         return hotelCreateResponse;
     }
 
@@ -60,7 +60,7 @@ public class HotelServiceImpl implements HotelService {
                 });
         log.debug("Hotel has been find by id: {} \n Hotel: {}", id, hotel);
         HotelFindResponse hotelFindResponse = hotelMapper.hotelToHotelFindResponse(hotel);
-        log.debug("HotelResponse dto: {}", hotelFindResponse);
+        log.debug("HotelFindResponse dto: {}", hotelFindResponse);
         return hotelFindResponse;
     }
 
@@ -77,6 +77,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<String, Long> getHistogram(String param) {
         return switch (param) {
             case "country" -> listToMap(hotelRepository.groupByCountry());

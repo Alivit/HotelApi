@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class PhoneValidator implements ConstraintValidator<Phone, String> {
 
-    private static final String PHONE_PATTERN = "^[+]{1}(?:[0-9\\-\\(\\)\\/\\.]\\s?){6,15}[0-9]{1}$";
+    private static final String PHONE_PATTERN = "^\\+[1-9]\\d{1,3}(?:[\\s\\-]?\\d){8,20}$";
 
     @Override
     public boolean isValid(String phoneNumber, ConstraintValidatorContext constraintValidatorContext) {

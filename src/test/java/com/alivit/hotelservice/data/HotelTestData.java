@@ -43,9 +43,9 @@ public final class HotelTestData {
                 .name(NAME)
                 .description(DESCRIPTION)
                 .brand(BRAND)
-                .address(AddressTestData.getAddressDto())
-                .arrivalTime(ArrivalTimeTestData.getArrivalTimeDto())
                 .contacts(ContactsTestData.getContactsDto())
+                .arrivalTime(ArrivalTimeTestData.getArrivalTimeDto())
+                .address(AddressTestData.getAddressDto())
                 .build();
     }
 

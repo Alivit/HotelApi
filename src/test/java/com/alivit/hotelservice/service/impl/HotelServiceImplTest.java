@@ -24,7 +24,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +38,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -262,6 +265,75 @@ class HotelServiceImplTest {
             assertEquals(2, result.getTotalElements());
             verify(hotelRepository, times(1))
                     .findByParams(argThat(p -> p.amenities().contains("Free parking")), eq(pageable));
+        }
+    }
+
+    @Nested
+    class Histogram {
+
+        @Test
+        void getHistogramShouldReturnCountryHistogram() {
+            String param = "country";
+            List<Object[]> countryData = List.of(
+                    new Object[]{"Belarus", 5L},
+                    new Object[]{"France", 3L},
+                    new Object[]{"Italy", 2L}
+            );
+
+            when(hotelRepository.groupByCountry()).thenReturn(countryData);
+
+            Map<String, Long> expected = Map.of(
+                    "Belarus", 5L,
+                    "France", 3L,
+                    "Italy", 2L
+            );
+
+            Map<String, Long> result = hotelService.getHistogram(param);
+
+            assertEquals(expected, result);
+            verify(hotelRepository, times(1)).groupByCountry();
+            verify(hotelRepository, never()).groupByCity();
+            verify(hotelRepository, never()).groupByAmenity();
+            verify(hotelRepository, never()).groupByBrand();
+        }
+
+        @Test
+        void getHistogramShouldReturnCityHistogram() {
+            String param = "city";
+            List<Object[]> cityData = List.of(
+                    new Object[]{"Minsk", 3L},
+                    new Object[]{"Paris", 2L}
+            );
+
+            when(hotelRepository.groupByCity()).thenReturn(cityData);
+
+            Map<String, Long> result = hotelService.getHistogram(param);
+
+            assertEquals(2, result.size());
+            assertEquals(3L, result.get("Minsk"));
+            verify(hotelRepository, times(1)).groupByCity();
+        }
+
+        @Test
+        void getHistogramShouldReturnEmptyMapForNoneParameter() {
+            String unknownParam = "none";
+
+            Map<String, Long> result = hotelService.getHistogram(unknownParam);
+
+            assertNotNull(result);
+            assertTrue(result.isEmpty());
+            verifyNoInteractions(hotelRepository);
+        }
+
+        @Test
+        void getHistogramShouldReturnEmptyMapWhenRepositoryReturnsEmptyList() {
+            String param = "brand";
+            when(hotelRepository.groupByBrand()).thenReturn(Collections.emptyList());
+
+            Map<String, Long> result = hotelService.getHistogram(param);
+
+            assertNotNull(result);
+            assertTrue(result.isEmpty());
         }
     }
 }

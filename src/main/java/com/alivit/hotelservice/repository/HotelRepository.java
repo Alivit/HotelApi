@@ -22,17 +22,17 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecific
     List<Object[]> groupByBrand();
 
     @Query(value = "SELECT A.CITY, COUNT(*) FROM HOTELS "
-            + "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
+            + "INNER JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
             + "GROUP BY A.CITY", nativeQuery = true)
     List<Object[]> groupByCity();
 
     @Query(value = "SELECT A.AMENITY, COUNT(*) FROM HOTELS "
-            + "LEFT JOIN PUBLIC.AMENITIES AS A on A.HOTEL_ID = HOTELS.ID "
+            + "INNER JOIN PUBLIC.AMENITIES AS A on A.HOTEL_ID = HOTELS.ID "
             + "GROUP BY A.AMENITY", nativeQuery = true)
     List<Object[]> groupByAmenity();
 
     @Query(value = "SELECT A.COUNTRY, COUNT(*) FROM HOTELS "
-            + "LEFT JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
+            + "INNER JOIN PUBLIC.ADDRESS AS A on A.ID = HOTELS.ADDRESS_ID "
             + "GROUP BY A.COUNTRY", nativeQuery = true)
     List<Object[]> groupByCountry();
 
