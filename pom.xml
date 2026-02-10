@@ -112,30 +112,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <configLocation>${checkstyle.config.path}/checkstyle.xml</configLocation>
-                    <suppressionsLocation>${checkstyle.config.path}/suppressions.xml</suppressionsLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <failOnViolation>false</failOnViolation>
-                    <failsOnError>false</failsOnError>
-                    <propertyExpansion>config.checkstyle.build.directory=${project.build.directory}</propertyExpansion>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <inherited>true</inherited>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
