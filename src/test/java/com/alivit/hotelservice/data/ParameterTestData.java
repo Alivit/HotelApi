@@ -3,6 +3,7 @@ package com.alivit.hotelservice.data;
 import com.alivit.hotelservice.dto.ParamsDto;
 
 public final class ParameterTestData {
+
     private static final String NAME = "DoubleTree";
     private static final String BRAND = "Hilton";
     private static final String CITY = "Minsk";

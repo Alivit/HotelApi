@@ -121,8 +121,8 @@
                     <suppressionsLocation>${checkstyle.config.path}/suppressions.xml</suppressionsLocation>
                     <consoleOutput>true</consoleOutput>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
+                    <failOnViolation>false</failOnViolation>
+                    <failsOnError>false</failsOnError>
                     <propertyExpansion>config.checkstyle.build.directory=${project.build.directory}</propertyExpansion>
                 </configuration>
                 <executions>

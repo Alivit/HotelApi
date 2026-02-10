@@ -23,6 +23,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Table(name = "arrival_times")
 public class ArrivalTime {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
